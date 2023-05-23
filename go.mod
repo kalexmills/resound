@@ -1,4 +1,4 @@
-module github.com/solarlune/resound
+module github.com/kalexmills/resound
 
 go 1.19
 
