@@ -12,7 +12,7 @@ package resound
 // sfxChain at the end would be the Volume effect, which is being fed by the Pan effect, which is fed by the Delay effect.
 func ChainEffects(effects ...IEffect) IEffect {
 	for i := 1; i < len(effects); i++ {
-		effects[i].setSource(effects[i-1])
+		effects[i].SetSource(effects[i-1])
 	}
 	return effects[len(effects)-1]
 }

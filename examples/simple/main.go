@@ -14,7 +14,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/audio/vorbis"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
-	"github.com/solarlune/resound"
+	"github.com/kalexmills/resound"
 	"golang.org/x/image/font/basicfont"
 )
 

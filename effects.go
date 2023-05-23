@@ -45,8 +45,8 @@ func (ab audioBuffer) Set(i int, l, r float64) {
 // It represents the result of applying an effect to an audio stream, and is playable in its own right.
 type IEffect interface {
 	io.ReadSeeker
-	applyEffect(data []byte)
-	setSource(io.ReadSeeker)
+	ApplyEffect(data []byte)
+	SetSource(io.ReadSeeker)
 }
 
 // Volume is an effect that changes the overall volume of the incoming audio byte stream.
@@ -82,13 +82,13 @@ func (volume *Volume) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 
-	volume.applyEffect(p)
+	volume.ApplyEffect(p)
 
 	return n, nil
 
 }
 
-func (volume *Volume) applyEffect(p []byte) {
+func (volume *Volume) ApplyEffect(p []byte) {
 
 	if !volume.active {
 		return
@@ -147,7 +147,7 @@ func (volume *Volume) Strength() float64 {
 	return volume.strength
 }
 
-func (volume *Volume) setSource(source io.ReadSeeker) {
+func (volume *Volume) SetSource(source io.ReadSeeker) {
 	volume.Source = source
 }
 
@@ -185,13 +185,13 @@ func (pan *Pan) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 
-	pan.applyEffect(p)
+	pan.ApplyEffect(p)
 
 	return len(p), nil
 
 }
 
-func (pan *Pan) applyEffect(p []byte) {
+func (pan *Pan) ApplyEffect(p []byte) {
 
 	if !pan.active {
 		return
@@ -261,7 +261,7 @@ func (pan *Pan) Pan() float64 {
 	return pan.strength
 }
 
-func (pan *Pan) setSource(source io.ReadSeeker) {
+func (pan *Pan) SetSource(source io.ReadSeeker) {
 	pan.Source = source
 }
 
@@ -311,13 +311,13 @@ func (delay *Delay) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 
-	delay.applyEffect(p)
+	delay.ApplyEffect(p)
 
 	return len(p), nil
 
 }
 
-func (delay *Delay) applyEffect(p []byte) {
+func (delay *Delay) ApplyEffect(p []byte) {
 
 	sampleRate := audio.CurrentContext().SampleRate()
 
@@ -418,7 +418,7 @@ func (delay *Delay) FeedbackLoop() bool {
 	return delay.feedbackLoop
 }
 
-func (delay *Delay) setSource(source io.ReadSeeker) {
+func (delay *Delay) SetSource(source io.ReadSeeker) {
 	delay.Source = source
 }
 
@@ -459,13 +459,13 @@ func (distort *Distort) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 
-	distort.applyEffect(p)
+	distort.ApplyEffect(p)
 
 	return len(p), nil
 
 }
 
-func (distort *Distort) applyEffect(p []byte) {
+func (distort *Distort) ApplyEffect(p []byte) {
 
 	if !distort.active || distort.strength <= 0 {
 		return
@@ -521,7 +521,7 @@ func (distort *Distort) SetStrength(strength float64) *Distort {
 	return distort
 }
 
-func (distort *Distort) setSource(source io.ReadSeeker) {
+func (distort *Distort) SetSource(source io.ReadSeeker) {
 	distort.Source = source
 }
 
@@ -562,13 +562,13 @@ func (lpf *LowpassFilter) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 
-	lpf.applyEffect(p)
+	lpf.ApplyEffect(p)
 
 	return len(p), nil
 
 }
 
-func (lpf *LowpassFilter) applyEffect(p []byte) {
+func (lpf *LowpassFilter) ApplyEffect(p []byte) {
 
 	if !lpf.active {
 		return
@@ -621,7 +621,7 @@ func (lpf *LowpassFilter) SetStrength(strength float64) *LowpassFilter {
 	return lpf
 }
 
-func (lpf *LowpassFilter) setSource(source io.ReadSeeker) {
+func (lpf *LowpassFilter) SetSource(source io.ReadSeeker) {
 	lpf.Source = source
 }
 
@@ -657,12 +657,12 @@ func (bitcrush *Bitcrush) Read(p []byte) (n int, err error) {
 		return 0, err
 	}
 
-	bitcrush.applyEffect(p)
+	bitcrush.ApplyEffect(p)
 
 	return len(p), nil
 }
 
-func (bitcrush *Bitcrush) applyEffect(p []byte) {
+func (bitcrush *Bitcrush) ApplyEffect(p []byte) {
 
 	if !bitcrush.active || bitcrush.strength == 0 {
 		return
@@ -724,7 +724,7 @@ func (bitcrush *Bitcrush) SetStrength(bitcrushFactor float64) *Bitcrush {
 	return bitcrush
 }
 
-func (bitcrush *Bitcrush) setSource(source io.ReadSeeker) {
+func (bitcrush *Bitcrush) SetSource(source io.ReadSeeker) {
 	bitcrush.Source = source
 }
 
@@ -764,13 +764,13 @@ func (bitcrush *Bitcrush) setSource(source io.ReadSeeker) {
 // 		return 0, err
 // 	}
 
-// 	reverb.applyEffect(p)
+// 	reverb.ApplyEffect(p)
 
 // 	return len(p), nil
 
 // }
 
-// func (reverb *Reverb) applyEffect(p []byte) {
+// func (reverb *Reverb) ApplyEffect(p []byte) {
 
 // 	for i := 0; i < len(p); i += 4 {
 // 		lc := int16(p[i]) | int16(p[i+1])<<8
